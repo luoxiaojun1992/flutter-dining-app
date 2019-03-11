@@ -1,18 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:dining/pages/base.dart';
 
-class MenuPage extends StatefulWidget {
-  MenuPage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class MenuPage extends BasePage {
+  MenuPage({Key key, String title}) : super(key: key, title: title);
 
   @override
   _MenuPageState createState() => _MenuPageState();
@@ -77,6 +67,51 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
+  _fetchMenu(BuildContext context) {
+    return <Widget>[
+      ListTile(
+        title: FlatButton(
+          child: Text('毛血旺'),
+          onPressed: () {
+            _selectFood(context, '毛血旺', 1);
+          },
+        ),
+      ),
+      ListTile(
+        title: FlatButton(
+          child: Text('酸菜鱼片'),
+          onPressed: () {
+            _selectFood(context, '酸菜鱼片', 2);
+          },
+        ),
+      ),
+      ListTile(
+        title: FlatButton(
+          child: Text('干锅童子鸡'),
+          onPressed: () {
+            _selectFood(context, '干锅童子鸡', 3);
+          },
+        ),
+      ),
+      ListTile(
+        title: FlatButton(
+          child: Text('凉拌海蜇皮'),
+          onPressed: () {
+            _selectFood(context, '凉拌海蜇皮', 4);
+          },
+        ),
+      ),
+      ListTile(
+        title: FlatButton(
+          child: Text('清炒菠菜'),
+          onPressed: () {
+            _selectFood(context, '清炒菠菜', 5);
+          },
+        ),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,48 +121,7 @@ class _MenuPageState extends State<MenuPage> {
         child: Container(
             height: 500.00,
             child: ListView(
-              children: <Widget>[
-                ListTile(
-                  title: FlatButton(
-                    child: Text('毛血旺'),
-                    onPressed: () {
-                      _selectFood(context, '毛血旺', 1);
-                    },
-                  ),
-                ),
-                ListTile(
-                  title: FlatButton(
-                    child: Text('酸菜鱼片'),
-                    onPressed: () {
-                      _selectFood(context, '酸菜鱼片', 2);
-                    },
-                  ),
-                ),
-                ListTile(
-                  title: FlatButton(
-                    child: Text('干锅童子鸡'),
-                    onPressed: () {
-                      _selectFood(context, '干锅童子鸡', 3);
-                    },
-                  ),
-                ),
-                ListTile(
-                  title: FlatButton(
-                    child: Text('凉拌海蜇皮'),
-                    onPressed: () {
-                      _selectFood(context, '凉拌海蜇皮', 4);
-                    },
-                  ),
-                ),
-                ListTile(
-                  title: FlatButton(
-                    child: Text('清炒菠菜'),
-                    onPressed: () {
-                      _selectFood(context, '清炒菠菜', 5);
-                    },
-                  ),
-                ),
-              ],
+              children: _fetchMenu(context),
             )),
       ),
       floatingActionButton: FloatingActionButton(
