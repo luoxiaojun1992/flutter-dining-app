@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:dining/pages/menu.dart';
+import 'package:dining/pages/order.dart';
 
 void main() => runApp(MyApp());
 
@@ -44,49 +46,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  List<Widget> _pageList = [
+    MenuPage(),
+    OrderPage(),
+  ];
 
-  List<int> selectedFoods = [];
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  _selectFood(BuildContext context, String foodName, int foodId){
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              '请确认菜名',
-              textAlign: TextAlign.center,
-            ),
-            content: Text(
-              foodName,
-              textAlign: TextAlign.center,
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(
-                  'ok'
-                ),
-                onPressed: () {
-                  selectedFoods.add(foodId);
-                  Navigator.of(context).pop();
-                }
-              )
-            ],
-          );
-        },
-      );
-    }
+  int _pageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -102,98 +67,28 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Container(
-          height: 500.00,
-          child: ListView(
-            children: <Widget>[
-              ListTile(
-                title: FlatButton(
-                  child: Text(
-                    '毛血旺'
-                  ),
-                  onPressed: () {
-                    _selectFood(context, '毛血旺', 1);
-                  },
-                ),
-              ),
-              ListTile(
-                title: FlatButton(
-                  child: Text(
-                    '酸菜鱼片'
-                  ),
-                  onPressed: () {
-                    _selectFood(context, '酸菜鱼片', 2);
-                  },
-                ),
-              ),
-              ListTile(
-                title: FlatButton(
-                  child: Text(
-                    '干锅童子鸡'
-                  ),
-                  onPressed: () {
-                    _selectFood(context, '干锅童子鸡', 3);
-                  },
-                ),
-              ),
-              ListTile(
-                title: FlatButton(
-                  child: Text(
-                    '凉拌海蜇皮'
-                  ),
-                  onPressed: () {
-                    _selectFood(context, '凉拌海蜇皮', 4);
-                  },
-                ),
-              ),
-              ListTile(
-                title: FlatButton(
-                  child: Text(
-                    '清炒菠菜'
-                  ),
-                  onPressed: () {
-                    _selectFood(context, '清炒菠菜', 5);
-                  },
-                ),
-              ),
-            ],
-          )
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(
-                  '确认提交',
-                  textAlign: TextAlign.center,
-                ),
-                content: Text(
-                  selectedFoods.join('、'),
-                  textAlign: TextAlign.center,
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text(
-                      'ok'
-                    ),
-                    onPressed: () {
-                      //todo submit foods id
-                      Navigator.of(context).pop();
-                    }
-                  )
-                ],
-              );
-            },
-          );
+      body:_pageList[_pageIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            title: Text(
+              '我的菜单',
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_dining),
+            title: Text(
+              '全部已点',
+            ),
+          ),
+        ],
+        currentIndex: _pageIndex,
+        onTap: (index) {
+          setState(() {
+            _pageIndex = index;
+          });
         },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
