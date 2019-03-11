@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MenuPage extends StatefulWidget
-{
+class MenuPage extends StatefulWidget {
   MenuPage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -19,12 +18,11 @@ class MenuPage extends StatefulWidget
   _MenuPageState createState() => _MenuPageState();
 }
 
-class _MenuPageState extends State<MenuPage>
-{
+class _MenuPageState extends State<MenuPage> {
   Set<int> _selectedFoodIds = {};
   Set<String> _selectedFoodNames = {};
 
-  _selectFood(BuildContext context, String foodName, int foodId){
+  _selectFood(BuildContext context, String foodName, int foodId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -39,15 +37,12 @@ class _MenuPageState extends State<MenuPage>
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text(
-                'ok'
-              ),
-              onPressed: () {
-                _selectedFoodIds.add(foodId);
-                _selectedFoodNames.add(foodName);
-                Navigator.of(context).pop();
-              }
-            )
+                child: Text('ok'),
+                onPressed: () {
+                  _selectedFoodIds.add(foodId);
+                  _selectedFoodNames.add(foodName);
+                  Navigator.of(context).pop();
+                })
           ],
         );
       },
@@ -62,27 +57,24 @@ class _MenuPageState extends State<MenuPage>
           title: Text(
             '确认提交',
             textAlign: TextAlign.center,
-                        ),
-                        content: Text(
-                          _selectedFoodNames.join('、'),
-                          textAlign: TextAlign.center,
-                        ),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text(
-                              'ok'
-                            ),
-                            onPressed: () {
-                              //todo submit foods id
-                              _selectedFoodIds.clear();
-                              _selectedFoodNames.clear();
-                              Navigator.of(context).pop();
-                            }
-                          )
-                        ],
-                      );
-                    },
-                  );
+          ),
+          content: Text(
+            _selectedFoodNames.join('、'),
+            textAlign: TextAlign.center,
+          ),
+          actions: <Widget>[
+            FlatButton(
+                child: Text('ok'),
+                onPressed: () {
+                  //todo submit foods id
+                  _selectedFoodIds.clear();
+                  _selectedFoodNames.clear();
+                  Navigator.of(context).pop();
+                })
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -92,62 +84,51 @@ class _MenuPageState extends State<MenuPage>
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Container(
-          height: 500.00,
-          child: ListView(
-            children: <Widget>[
-              ListTile(
-                title: FlatButton(
-                  child: Text(
-                    '毛血旺'
+            height: 500.00,
+            child: ListView(
+              children: <Widget>[
+                ListTile(
+                  title: FlatButton(
+                    child: Text('毛血旺'),
+                    onPressed: () {
+                      _selectFood(context, '毛血旺', 1);
+                    },
                   ),
-                  onPressed: () {
-                    _selectFood(context, '毛血旺', 1);
-                  },
                 ),
-              ),
-              ListTile(
-                title: FlatButton(
-                  child: Text(
-                    '酸菜鱼片'
+                ListTile(
+                  title: FlatButton(
+                    child: Text('酸菜鱼片'),
+                    onPressed: () {
+                      _selectFood(context, '酸菜鱼片', 2);
+                    },
                   ),
-                  onPressed: () {
-                    _selectFood(context, '酸菜鱼片', 2);
-                  },
                 ),
-              ),
-              ListTile(
-                title: FlatButton(
-                  child: Text(
-                    '干锅童子鸡'
+                ListTile(
+                  title: FlatButton(
+                    child: Text('干锅童子鸡'),
+                    onPressed: () {
+                      _selectFood(context, '干锅童子鸡', 3);
+                    },
                   ),
-                  onPressed: () {
-                    _selectFood(context, '干锅童子鸡', 3);
-                  },
                 ),
-              ),
-              ListTile(
-                title: FlatButton(
-                  child: Text(
-                    '凉拌海蜇皮'
+                ListTile(
+                  title: FlatButton(
+                    child: Text('凉拌海蜇皮'),
+                    onPressed: () {
+                      _selectFood(context, '凉拌海蜇皮', 4);
+                    },
                   ),
-                  onPressed: () {
-                    _selectFood(context, '凉拌海蜇皮', 4);
-                  },
                 ),
-              ),
-              ListTile(
-                title: FlatButton(
-                  child: Text(
-                    '清炒菠菜'
+                ListTile(
+                  title: FlatButton(
+                    child: Text('清炒菠菜'),
+                    onPressed: () {
+                      _selectFood(context, '清炒菠菜', 5);
+                    },
                   ),
-                  onPressed: () {
-                    _selectFood(context, '清炒菠菜', 5);
-                  },
                 ),
-              ),
-            ],
-          )
-        ),
+              ],
+            )),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

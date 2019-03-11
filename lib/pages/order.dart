@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class OrderPage extends StatefulWidget
-{
+class OrderPage extends StatefulWidget {
   OrderPage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -19,14 +18,13 @@ class OrderPage extends StatefulWidget
   _OrderPageState createState() => _OrderPageState();
 }
 
-class _OrderPageState extends State<OrderPage>
-{
+class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Container(
+      // Center is a layout widget. It takes a single child and positions it
+      // in the middle of the parent.
+      child: Container(
           height: 500.00,
           child: ListView(
             children: <Widget>[
@@ -49,8 +47,7 @@ class _OrderPageState extends State<OrderPage>
                 ),
               ),
             ],
-          )
-        ),
-      );
+          )),
+    );
   }
 }
