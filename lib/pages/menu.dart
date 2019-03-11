@@ -9,6 +9,8 @@ class MenuPage extends BasePage {
 }
 
 class _MenuPageState extends State<MenuPage> {
+  String _searchFoodName = '';
+
   Set<int> _selectedFoodIds = {};
   Set<String> _selectedFoodNames = {};
 
@@ -49,7 +51,7 @@ class _MenuPageState extends State<MenuPage> {
             textAlign: TextAlign.center,
           ),
           content: Text(
-            _selectedFoodNames.join('、'),
+            '已点菜名：' + _selectedFoodNames.join('、'),
             textAlign: TextAlign.center,
           ),
           actions: <Widget>[
@@ -60,56 +62,57 @@ class _MenuPageState extends State<MenuPage> {
                   _selectedFoodIds.clear();
                   _selectedFoodNames.clear();
                   Navigator.of(context).pop();
-                })
+                }),
           ],
         );
       },
     );
   }
 
-  _fetchMenu(BuildContext context) {
-    return <Widget>[
-      ListTile(
-        title: FlatButton(
-          child: Text('毛血旺'),
-          onPressed: () {
-            _selectFood(context, '毛血旺', 1);
-          },
-        ),
-      ),
-      ListTile(
-        title: FlatButton(
-          child: Text('酸菜鱼片'),
-          onPressed: () {
-            _selectFood(context, '酸菜鱼片', 2);
-          },
-        ),
-      ),
-      ListTile(
-        title: FlatButton(
-          child: Text('干锅童子鸡'),
-          onPressed: () {
-            _selectFood(context, '干锅童子鸡', 3);
-          },
-        ),
-      ),
-      ListTile(
-        title: FlatButton(
-          child: Text('凉拌海蜇皮'),
-          onPressed: () {
-            _selectFood(context, '凉拌海蜇皮', 4);
-          },
-        ),
-      ),
-      ListTile(
-        title: FlatButton(
-          child: Text('清炒菠菜'),
-          onPressed: () {
-            _selectFood(context, '清炒菠菜', 5);
-          },
-        ),
-      ),
+  _fetchMenu(BuildContext context, int index) {
+    List<Map<String, dynamic>> menu = [
+      {
+        'name': '毛血旺',
+        'id': 1,
+      },
+      {
+        'name': '酸菜鱼片',
+        'id': 2,
+      },
+      {
+        'name': '干锅童子鸡',
+        'id': 3,
+      },
+      {
+        'name': '熏鱼',
+        'id': 4,
+      },
+      {
+        'name': '清炒菠菜',
+        'id': 5,
+      },
+      {
+        'name': '香椿炒鹅蛋',
+        'id': 6,
+      },
+      {
+        'name': '凉拌海蜇皮',
+        'id': 7,
+      },
     ];
+
+    if (index < menu.length) {
+      return ListTile(
+        title: FlatButton(
+          child: Text(menu[index]['name']),
+          onPressed: () {
+            _selectFood(context, menu[index]['name'], menu[index]['id']);
+          },
+        ),
+      );
+    }
+
+    return null;
   }
 
   @override
@@ -119,9 +122,26 @@ class _MenuPageState extends State<MenuPage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Container(
+            width: 200.00,
             height: 500.00,
-            child: ListView(
-              children: _fetchMenu(context),
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return TextField(
+                    decoration: InputDecoration(
+                      labelText: '菜名',
+                    ),
+                    textAlign: TextAlign.center,
+                    onChanged: (String foodName) {
+                      setState(() {
+                        _searchFoodName = foodName;
+                      });
+                    },
+                  );
+                } else {
+                  return _fetchMenu(context, index - 1);
+                }
+              },
             )),
       ),
       floatingActionButton: FloatingActionButton(

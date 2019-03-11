@@ -9,27 +9,25 @@ class OrderPage extends BasePage {
 }
 
 class _OrderPageState extends State<OrderPage> {
-  _fetchOrderedFoods() {
-    return <Widget>[
-      ListTile(
-        title: Text(
-          '毛血旺(张三)',
-          textAlign: TextAlign.center,
-        ),
-      ),
-      ListTile(
-        title: Text(
-          '酸菜鱼片(李四)',
-          textAlign: TextAlign.center,
-        ),
-      ),
-      ListTile(
-        title: Text(
-          '干锅童子鸡(小明)',
-          textAlign: TextAlign.center,
-        ),
-      ),
+  _fetchOrderedFood(index) {
+    List<Map<String, dynamic>> orderedFoods = [
+      {
+        'name': '毛血旺(张三)',
+      },
+      {'name': '酸菜鱼片(李四)'},
+      {'name': '干锅童子鸡(小明)'},
     ];
+
+    if (index < orderedFoods.length) {
+      return ListTile(
+        title: Text(
+          orderedFoods[index]['name'],
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
+    return null;
   }
 
   @override
@@ -39,8 +37,10 @@ class _OrderPageState extends State<OrderPage> {
       // in the middle of the parent.
       child: Container(
           height: 500.00,
-          child: ListView(
-            children: _fetchOrderedFoods(),
+          child: ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              return _fetchOrderedFood(index);
+            },
           )),
     );
   }

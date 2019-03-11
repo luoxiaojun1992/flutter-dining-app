@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dining/pages/base.dart';
 import 'package:dining/pages/menu.dart';
 import 'package:dining/pages/order.dart';
+import 'package:dining/pages/login.dart';
 
 class MyHomePage extends BasePage {
   MyHomePage({Key key, String title}) : super(key: key, title: title);
@@ -22,6 +23,9 @@ class _MyHomePageState extends State<MyHomePage> {
       title: '我的菜单',
     ),
     _orderPage(),
+    LoginPage(
+      title: '登录',
+    ),
   ];
 
   int _pageIndex = 0;
@@ -29,6 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _getPage(int pageIndex) {
     switch (pageIndex) {
       case 0:
+      case 2:
         return _pageList[pageIndex];
       case 1:
         return _pageList[pageIndex] = _orderPage();
@@ -62,6 +67,12 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.local_dining),
             title: Text(
               '全部已点',
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.verified_user),
+            title: Text(
+              '登录',
             ),
           ),
         ],
