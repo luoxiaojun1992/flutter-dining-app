@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dining/pages/base.dart';
+import 'package:dio/dio.dart';
 
 class MenuPage extends BasePage {
   MenuPage({Key key, String title}) : super(key: key, title: title);
@@ -10,6 +11,8 @@ class MenuPage extends BasePage {
 
 class _MenuPageState extends State<MenuPage> {
   String _searchFoodName = '';
+
+  List<dynamic> _menu = [];
 
   Set<int> _selectedFoodIds = {};
   Set<String> _selectedFoodNames = {};
@@ -69,47 +72,35 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  _fetchMenu(BuildContext context, int index) {
-    List<Map<String, dynamic>> menu = [
-      {
-        'name': '毛血旺',
-        'id': 1,
-      },
-      {
-        'name': '酸菜鱼片',
-        'id': 2,
-      },
-      {
-        'name': '干锅童子鸡',
-        'id': 3,
-      },
-      {
-        'name': '熏鱼',
-        'id': 4,
-      },
-      {
-        'name': '清炒菠菜',
-        'id': 5,
-      },
-      {
-        'name': '香椿炒鹅蛋',
-        'id': 6,
-      },
-      {
-        'name': '凉拌海蜇皮',
-        'id': 7,
-      },
-    ];
+  _fetchMenuData(int page) async {
+    Response response = await Dio().get(
+        'http://127.0.0.1:9501/dining/menu?page=' +
+            page.toString() +
+            '&keyword=' +
+            _searchFoodName,
+        options: Options(responseType: ResponseType.json));
 
-    if (index < menu.length) {
+    if (response.data.length > 0) {
+      setState(() {
+        response.data.forEach((dynamic v) {
+          _menu.add(v);
+        });
+      });
+    }
+  }
+
+  _fetchMenu(BuildContext context, int index) {
+    if (index < _menu.length) {
       return ListTile(
         title: FlatButton(
-          child: Text(menu[index]['name']),
+          child: Text(_menu[index]['name']),
           onPressed: () {
-            _selectFood(context, menu[index]['name'], menu[index]['id']);
+            _selectFood(context, _menu[index]['name'], _menu[index]['id']);
           },
         ),
       );
+    } else {
+      _fetchMenuData((index / 10).ceil() + 1);
     }
 
     return null;
@@ -135,6 +126,7 @@ class _MenuPageState extends State<MenuPage> {
                     onChanged: (String foodName) {
                       setState(() {
                         _searchFoodName = foodName;
+                        _menu = [];
                       });
                     },
                   );
