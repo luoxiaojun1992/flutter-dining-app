@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dining/pages/base.dart';
+import 'package:dio/dio.dart';
 
 class OrderPage extends BasePage {
   OrderPage({Key key, String title}) : super(key: key, title: title);
@@ -9,22 +10,37 @@ class OrderPage extends BasePage {
 }
 
 class _OrderPageState extends State<OrderPage> {
-  _fetchOrderedFood(index) {
-    List<Map<String, dynamic>> orderedFoods = [
-      {
-        'name': '毛血旺(张三)',
-      },
-      {'name': '酸菜鱼片(李四)'},
-      {'name': '干锅童子鸡(小明)'},
-    ];
+  String _searchKeyword = '';
 
-    if (index < orderedFoods.length) {
+  List<dynamic> _ordered = [];
+
+  _fetchOrderdData(int page) async {
+    Response response = await Dio().get(
+      'http://127.0.0.1:9501/dining/ordered',
+      queryParameters: {'page': page.toString(), 'keyword': _searchKeyword},
+      options: Options(responseType: ResponseType.json),
+    );
+
+    dynamic jsonData = response.data;
+    if (jsonData['code'] == 0 && jsonData['data'].length > 0) {
+      setState(() {
+        jsonData['data'].forEach((dynamic v) {
+          _ordered.add(v);
+        });
+      });
+    }
+  }
+
+  _fetchOrderedFood(index) {
+    if (index < _ordered.length) {
       return ListTile(
         title: Text(
-          orderedFoods[index]['name'],
+          _ordered[index]['name'],
           textAlign: TextAlign.center,
         ),
       );
+    } else {
+      _fetchOrderdData((index / 10).ceil() + 1);
     }
 
     return null;
@@ -36,12 +52,30 @@ class _OrderPageState extends State<OrderPage> {
       // Center is a layout widget. It takes a single child and positions it
       // in the middle of the parent.
       child: Container(
-          height: 500.00,
-          child: ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              return _fetchOrderedFood(index);
-            },
-          )),
+        width: 200.00,
+        height: 500.00,
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            print(index);
+            if (index == 0) {
+              return TextField(
+                decoration: InputDecoration(
+                  labelText: '搜索',
+                ),
+                textAlign: TextAlign.center,
+                onChanged: (String keyword) {
+                  setState(() {
+                    _searchKeyword = keyword;
+                    _ordered = [];
+                  });
+                },
+              );
+            } else {
+              return _fetchOrderedFood(index - 1);
+            }
+          },
+        )
+      ),
     );
   }
 }

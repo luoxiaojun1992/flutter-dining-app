@@ -44,6 +44,70 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
+  _submitFoodData(
+      BuildContext context, Set<int> foodsIds, Set<String> foodNames) async {
+    if (foodsIds.length <= 0) {
+      return;
+    }
+
+    String _foodsNamesStr = foodNames.join(',');
+
+    Response response = await Dio().post('http://127.0.0.1:9501/dining/order',
+        data: {'ids': foodsIds.toList()},
+        options: Options(responseType: ResponseType.json));
+
+    dynamic jsonData = response.data;
+    if (jsonData['code'] == 0) {
+      _selectedFoodIds.clear();
+      _selectedFoodNames.clear();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              '提交成功',
+              textAlign: TextAlign.center,
+            ),
+            content: Text(
+              '提交成功:' + _foodsNamesStr,
+              textAlign: TextAlign.center,
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text('ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  })
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              '提交成功',
+              textAlign: TextAlign.center,
+            ),
+            content: Text(
+              '提交失败:' + _foodsNamesStr,
+              textAlign: TextAlign.center,
+            ),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text('ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  })
+            ],
+          );
+        },
+      );
+    }
+  }
+
   _submitFood(BuildContext context) {
     showDialog(
       context: context,
@@ -61,9 +125,8 @@ class _MenuPageState extends State<MenuPage> {
             FlatButton(
                 child: Text('ok'),
                 onPressed: () {
-                  //todo submit foods id
-                  _selectedFoodIds.clear();
-                  _selectedFoodNames.clear();
+                  _submitFoodData(
+                      context, _selectedFoodIds, _selectedFoodNames);
                   Navigator.of(context).pop();
                 }),
           ],
@@ -73,16 +136,17 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   _fetchMenuData(int page) async {
-    Response response = await Dio().get(
-        'http://127.0.0.1:9501/dining/menu?page=' +
-            page.toString() +
-            '&keyword=' +
-            _searchFoodName,
+    Response response = await Dio().get('http://127.0.0.1:9501/dining/menu',
+        queryParameters: {
+          'page': page.toString(),
+          'keyword': _searchFoodName,
+        },
         options: Options(responseType: ResponseType.json));
 
-    if (response.data.length > 0) {
+    dynamic jsonData = response.data;
+    if (jsonData['code'] == 0 && jsonData['data'].length > 0) {
       setState(() {
-        response.data.forEach((dynamic v) {
+        jsonData['data'].forEach((dynamic v) {
           _menu.add(v);
         });
       });
