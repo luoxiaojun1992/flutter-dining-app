@@ -56,7 +56,6 @@ class _OrderPageState extends State<OrderPage> {
         height: 500.00,
         child: ListView.builder(
           itemBuilder: (BuildContext context, int index) {
-            print(index);
             if (index == 0) {
               return TextField(
                 decoration: InputDecoration(

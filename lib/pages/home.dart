@@ -12,32 +12,31 @@ class MyHomePage extends BasePage {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static _orderPage() {
-    return OrderPage(
-      title: '全部已点',
-    );
-  }
-
   List<BasePage> _pageList = [
     MenuPage(
       title: '我的菜单',
     ),
-    _orderPage(),
+    OrderPage(
+      title: '全部已点',
+    ),
     LoginPage(
       title: '登录',
     ),
   ];
 
+  List<String> _pageTitles = [
+    '我的菜单11111',
+    '全部已点',
+    '登录',
+  ];
+
   int _pageIndex = 0;
 
   _getPage(int pageIndex) {
-    switch (pageIndex) {
-      case 0:
-      case 2:
-        return _pageList[pageIndex];
-      case 1:
-        return _pageList[pageIndex] = _orderPage();
-    }
+    return IndexedStack(
+      index:pageIndex,
+      children: _pageList,
+    );
   }
 
   @override
@@ -52,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(_pageList[_pageIndex].title),
+        title: Text(_pageTitles[_pageIndex]),
       ),
       body: _getPage(_pageIndex),
       bottomNavigationBar: BottomNavigationBar(
