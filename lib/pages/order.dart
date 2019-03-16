@@ -15,23 +15,51 @@ class _OrderPageState extends State<OrderPage> {
   List<dynamic> _ordered = [];
 
   _fetchOrderdData(int page) async {
-    Response response = await Dio().get(
-      'http://127.0.0.1:9501/dining/ordered',
-      queryParameters: {
-        'page': page.toString(),
-        'keyword': _searchKeyword,
-        'auth_token': 'xxxxxx',
-      },
-      options: Options(responseType: ResponseType.json),
-    );
+    try {
+      Response response = await Dio().get(
+        'http://127.0.0.1:9501/dining/ordered',
+        queryParameters: {
+          'page': page.toString(),
+          'keyword': _searchKeyword,
+          'auth_token': 'xxxxxx',
+        },
+        options: Options(responseType: ResponseType.json),
+      );
 
-    dynamic jsonData = response.data;
-    if (jsonData['code'] == 0 && jsonData['data'].length > 0) {
-      setState(() {
-        jsonData['data'].forEach((dynamic v) {
-          _ordered.add(v);
+      dynamic jsonData = response.data;
+      if (jsonData['code'] == 0 && jsonData['data'].length > 0) {
+        setState(() {
+          jsonData['data'].forEach((dynamic v) {
+            _ordered.add(v);
+          });
         });
-      });
+      }
+    } catch (e) {
+      if (e.response != null && e.response.statusCode == 401) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                '加载失败',
+                textAlign: TextAlign.center,
+              ),
+              content: Text(
+                '请先登陆',
+                textAlign: TextAlign.center,
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 

@@ -109,7 +109,11 @@ class _MenuPageState extends State<MenuPage> {
           },
         );
       }
-    } catch (Error) {
+    } catch (e) {
+      String errStr = _foodsNamesStr;
+      if (e.response != null && e.response.statusCode == 401) {
+        errStr = '请先登陆';
+      }
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -119,7 +123,7 @@ class _MenuPageState extends State<MenuPage> {
               textAlign: TextAlign.center,
             ),
             content: Text(
-              '提交失败:' + _foodsNamesStr,
+              '提交失败:' + errStr,
               textAlign: TextAlign.center,
             ),
             actions: <Widget>[
@@ -168,7 +172,6 @@ class _MenuPageState extends State<MenuPage> {
         queryParameters: {
           'page': page.toString(),
           'keyword': _searchFoodName,
-          'auth_token': 'xxxxxx',
         },
         options: Options(responseType: ResponseType.json));
 

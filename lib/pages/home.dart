@@ -25,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   List<String> _pageTitles = [
-    '我的菜单11111',
+    '我的菜单',
     '全部已点',
     '登录',
   ];
