@@ -17,7 +17,11 @@ class _OrderPageState extends State<OrderPage> {
   _fetchOrderdData(int page) async {
     Response response = await Dio().get(
       'http://127.0.0.1:9501/dining/ordered',
-      queryParameters: {'page': page.toString(), 'keyword': _searchKeyword},
+      queryParameters: {
+        'page': page.toString(),
+        'keyword': _searchKeyword,
+        'auth_token': 'xxxxxx',
+      },
       options: Options(responseType: ResponseType.json),
     );
 

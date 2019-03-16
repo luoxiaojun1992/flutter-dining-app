@@ -13,35 +13,60 @@ class _LoginPageState extends State<LoginPage> {
   String _code = '';
 
   _login(BuildContext context, String code) async {
-    Response response = await Dio().post('http://127.0.0.1:9501/dining/login',
-        data: {'code': code},
-        options: Options(responseType: ResponseType.json));
+    try {
+      Response response = await Dio().post('http://127.0.0.1:9501/dining/login',
+          data: {'code': code},
+          options: Options(responseType: ResponseType.json));
 
-    dynamic jsonData =response.data;
-    if (jsonData['code'] == 0) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              '提交成功',
-              textAlign: TextAlign.center,
-            ),
-            content: Text(
-              '登录成功',
-              textAlign: TextAlign.center,
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                })
-              ],
-            );
-          },
-      );
-    } else {
+      dynamic jsonData =response.data;
+      if (jsonData['code'] == 0) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                '提交成功',
+                textAlign: TextAlign.center,
+              ),
+              content: Text(
+                jsonData['data']['token'] + '登录成功',
+                textAlign: TextAlign.center,
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  })
+                ],
+              );
+            },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                '提交成功',
+                textAlign: TextAlign.center,
+              ),
+              content: Text(
+                '登录失败',
+                textAlign: TextAlign.center,
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  })
+                ],
+              );
+            },
+        );
+      }
+    } catch (Error) {
       showDialog(
         context: context,
         builder: (BuildContext context) {

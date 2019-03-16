@@ -52,37 +52,64 @@ class _MenuPageState extends State<MenuPage> {
 
     String _foodsNamesStr = foodNames.join(',');
 
-    Response response = await Dio().post('http://127.0.0.1:9501/dining/order',
-        data: {'ids': foodsIds.toList()},
-        options: Options(responseType: ResponseType.json));
+    try {
+      Response response = await Dio().post('http://127.0.0.1:9501/dining/order',
+          queryParameters: {'auth_token': 'xxxxxx'},
+          data: {'ids': foodsIds.toList()},
+          options: Options(responseType: ResponseType.json));
 
-    dynamic jsonData = response.data;
-    if (jsonData['code'] == 0) {
-      _selectedFoodIds.clear();
-      _selectedFoodNames.clear();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              '提交成功',
-              textAlign: TextAlign.center,
-            ),
-            content: Text(
-              '提交成功:' + _foodsNamesStr,
-              textAlign: TextAlign.center,
-            ),
-            actions: <Widget>[
-              FlatButton(
+      dynamic jsonData = response.data;
+      if (jsonData['code'] == 0) {
+        _selectedFoodIds.clear();
+        _selectedFoodNames.clear();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                '提交成功',
+                textAlign: TextAlign.center,
+              ),
+              content: Text(
+                '提交成功:' + _foodsNamesStr,
+                textAlign: TextAlign.center,
+              ),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    })
+              ],
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                '提交成功',
+                textAlign: TextAlign.center,
+              ),
+              content: Text(
+                '提交失败:' + _foodsNamesStr,
+                textAlign: TextAlign.center,
+              ),
+              actions: <Widget>[
+                FlatButton(
                   child: Text('ok'),
                   onPressed: () {
                     Navigator.of(context).pop();
-                  })
-            ],
-          );
-        },
-      );
-    } else {
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (Error) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -97,10 +124,11 @@ class _MenuPageState extends State<MenuPage> {
             ),
             actions: <Widget>[
               FlatButton(
-                  child: Text('ok'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  })
+                child: Text('ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ],
           );
         },
@@ -140,6 +168,7 @@ class _MenuPageState extends State<MenuPage> {
         queryParameters: {
           'page': page.toString(),
           'keyword': _searchFoodName,
+          'auth_token': 'xxxxxx',
         },
         options: Options(responseType: ResponseType.json));
 

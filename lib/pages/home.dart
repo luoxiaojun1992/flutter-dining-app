@@ -33,10 +33,14 @@ class _MyHomePageState extends State<MyHomePage> {
   int _pageIndex = 0;
 
   _getPage(int pageIndex) {
-    return IndexedStack(
-      index:pageIndex,
-      children: _pageList,
-    );
+    //todo uncomment after implementing pull refresh
+
+    // return IndexedStack(
+    //   index:pageIndex,
+    //   children: _pageList,
+    // );
+
+    return _pageList[pageIndex];
   }
 
   @override
