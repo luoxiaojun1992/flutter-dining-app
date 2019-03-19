@@ -21,9 +21,14 @@ class _OrderPageState extends State<OrderPage> {
         queryParameters: {
           'page': page.toString(),
           'keyword': _searchKeyword,
-          'auth_token': 'xxxxxx',
         },
-        options: Options(responseType: ResponseType.json),
+        options: Options(
+          responseType: ResponseType.json,
+          headers: {
+            'Authorization':
+                'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjRmMWcyM2ExMmFhIn0.eyJpc3MiOiJodHRwOlwvXC9leGFtcGxlLmNvbSIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUub3JnIiwianRpIjoiNGYxZzIzYTEyYWEiLCJpYXQiOjE1NTI5MDA3MzEsIm5iZiI6MTU1MjkwMDczMSwiZXhwIjoxNTUyOTg3MTMxLCJ1aWQiOjF9.8M6aGHBM54GN3jKPWt8fzMTVA3UQYWrl90g1WlooFrQ',
+          },
+        ),
       );
 
       dynamic jsonData = response.data;
@@ -84,29 +89,28 @@ class _OrderPageState extends State<OrderPage> {
       // Center is a layout widget. It takes a single child and positions it
       // in the middle of the parent.
       child: Container(
-        width: 200.00,
-        height: 500.00,
-        child: ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            if (index == 0) {
-              return TextField(
-                decoration: InputDecoration(
-                  labelText: '搜索',
-                ),
-                textAlign: TextAlign.center,
-                onChanged: (String keyword) {
-                  setState(() {
-                    _searchKeyword = keyword;
-                    _ordered = [];
-                  });
-                },
-              );
-            } else {
-              return _fetchOrderedFood(index - 1);
-            }
-          },
-        )
-      ),
+          width: 200.00,
+          height: 500.00,
+          child: ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              if (index == 0) {
+                return TextField(
+                  decoration: InputDecoration(
+                    labelText: '搜索',
+                  ),
+                  textAlign: TextAlign.center,
+                  onChanged: (String keyword) {
+                    setState(() {
+                      _searchKeyword = keyword;
+                      _ordered = [];
+                    });
+                  },
+                );
+              } else {
+                return _fetchOrderedFood(index - 1);
+              }
+            },
+          )),
     );
   }
 }

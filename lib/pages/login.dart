@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
           data: {'code': code},
           options: Options(responseType: ResponseType.json));
 
-      dynamic jsonData =response.data;
+      dynamic jsonData = response.data;
       if (jsonData['code'] == 0) {
         showDialog(
           context: context,
@@ -34,13 +34,13 @@ class _LoginPageState extends State<LoginPage> {
               ),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('ok'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  })
-                ],
-              );
-            },
+                    child: Text('ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    })
+              ],
+            );
+          },
         );
       } else {
         showDialog(
@@ -57,13 +57,13 @@ class _LoginPageState extends State<LoginPage> {
               ),
               actions: <Widget>[
                 FlatButton(
-                  child: Text('ok'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  })
-                ],
-              );
-            },
+                    child: Text('ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    })
+              ],
+            );
+          },
         );
       }
     } catch (Error) {
@@ -81,13 +81,13 @@ class _LoginPageState extends State<LoginPage> {
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text('ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                })
-              ],
-            );
-          },
+                  child: Text('ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  })
+            ],
+          );
+        },
       );
     }
   }

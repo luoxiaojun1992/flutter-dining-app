@@ -53,10 +53,17 @@ class _MenuPageState extends State<MenuPage> {
     String _foodsNamesStr = foodNames.join(',');
 
     try {
-      Response response = await Dio().post('http://127.0.0.1:9501/dining/order',
-          queryParameters: {'auth_token': 'xxxxxx'},
-          data: {'ids': foodsIds.toList()},
-          options: Options(responseType: ResponseType.json));
+      Response response = await Dio().post(
+        'http://127.0.0.1:9501/dining/order',
+        data: {'ids': foodsIds.toList()},
+        options: Options(
+          responseType: ResponseType.json,
+          headers: {
+            'Authorization':
+                'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjRmMWcyM2ExMmFhIn0.eyJpc3MiOiJodHRwOlwvXC9leGFtcGxlLmNvbSIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUub3JnIiwianRpIjoiNGYxZzIzYTEyYWEiLCJpYXQiOjE1NTI5MDA3MzEsIm5iZiI6MTU1MjkwMDczMSwiZXhwIjoxNTUyOTg3MTMxLCJ1aWQiOjF9.8M6aGHBM54GN3jKPWt8fzMTVA3UQYWrl90g1WlooFrQ',
+          },
+        ),
+      );
 
       dynamic jsonData = response.data;
       if (jsonData['code'] == 0) {
