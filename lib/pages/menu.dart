@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dining/pages/base.dart';
 import 'package:dio/dio.dart';
+import 'package:dining/components/dialog.dart';
 
 class MenuPage extends BasePage {
   MenuPage({Key key, String title}) : super(key: key, title: title);
@@ -18,28 +19,14 @@ class _MenuPageState extends State<MenuPage> {
   Set<String> _selectedFoodNames = {};
 
   _selectFood(BuildContext context, String foodName, int foodId) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            '请确认菜名',
-            textAlign: TextAlign.center,
-          ),
-          content: Text(
-            foodName,
-            textAlign: TextAlign.center,
-          ),
-          actions: <Widget>[
-            FlatButton(
-                child: Text('ok'),
-                onPressed: () {
-                  _selectedFoodIds.add(foodId);
-                  _selectedFoodNames.add(foodName);
-                  Navigator.of(context).pop();
-                })
-          ],
-        );
+    alert(
+      '请确认菜名',
+      foodName,
+      context,
+      okCallback: () {
+        _selectedFoodIds.add(foodId);
+        _selectedFoodNames.add(foodName);
+        Navigator.of(context).pop();
       },
     );
   }
