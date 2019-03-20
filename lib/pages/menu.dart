@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dining/pages/base.dart';
 import 'package:dio/dio.dart';
-import 'package:dining/components/dialog.dart';
+import 'package:dining/components/view/dialog.dart';
+import 'package:dining/components/basic/auth.dart';
 
 class MenuPage extends BasePage {
   MenuPage({Key key, String title}) : super(key: key, title: title);
@@ -40,15 +41,16 @@ class _MenuPageState extends State<MenuPage> {
     String _foodsNamesStr = foodNames.join(',');
 
     try {
+      Map<String, dynamic> headers = {};
+      if (await Auth.getToken() != null) {
+        headers['Authorization'] = await Auth.getToken();
+      }
       Response response = await Dio().post(
         'http://127.0.0.1:9501/dining/order',
         data: {'ids': foodsIds.toList()},
         options: Options(
           responseType: ResponseType.json,
-          headers: {
-            'Authorization':
-                'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjRmMWcyM2ExMmFhIn0.eyJpc3MiOiJodHRwOlwvXC9leGFtcGxlLmNvbSIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUub3JnIiwianRpIjoiNGYxZzIzYTEyYWEiLCJpYXQiOjE1NTI5MDA3MzEsIm5iZiI6MTU1MjkwMDczMSwiZXhwIjoxNTUyOTg3MTMxLCJ1aWQiOjF9.8M6aGHBM54GN3jKPWt8fzMTVA3UQYWrl90g1WlooFrQ',
-          },
+          headers: headers,
         ),
       );
 

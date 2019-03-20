@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dining/pages/base.dart';
 import 'package:dio/dio.dart';
+import 'package:dining/components/basic/auth.dart';
 
 class LoginPage extends BasePage {
   LoginPage({Key key, String title}) : super(key: key, title: title);
@@ -20,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
 
       dynamic jsonData = response.data;
       if (jsonData['code'] == 0) {
+        await Auth.setToken(jsonData['data']['token']);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -29,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
                 textAlign: TextAlign.center,
               ),
               content: Text(
-                jsonData['data']['token'] + '登录成功',
+                '登录成功',
                 textAlign: TextAlign.center,
               ),
               actions: <Widget>[
