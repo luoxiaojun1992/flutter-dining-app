@@ -1,7 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 
-class Sqlite
-{
+class Sqlite {
   static Database database;
 
   static init() async {
@@ -20,13 +19,13 @@ class Sqlite
 
   static insert(String sql, List<dynamic> arguments) async {
     if (database != null) {
-      await database.rawInsert(sql, arguments);
+      return await database.rawInsert(sql, arguments);
     }
   }
 
   static update(String sql, List<dynamic> arguments) async {
     if (database != null) {
-      await database.rawUpdate(sql, arguments);
+      return await database.rawUpdate(sql, arguments);
     }
   }
 
