@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dining/pages/base.dart';
 import 'package:dio/dio.dart';
 import 'package:dining/components/basic/auth.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class OrderPage extends BasePage {
   OrderPage({Key key, String title}) : super(key: key, title: title);
@@ -87,32 +88,36 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      // Center is a layout widget. It takes a single child and positions it
-      // in the middle of the parent.
-      child: Container(
-          width: 200.00,
-          height: 500.00,
-          child: ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              if (index == 0) {
-                return TextField(
-                  decoration: InputDecoration(
-                    labelText: '搜索',
-                  ),
-                  textAlign: TextAlign.center,
-                  onChanged: (String keyword) {
-                    setState(() {
-                      _searchKeyword = keyword;
-                      _ordered = [];
-                    });
-                  },
-                );
-              } else {
-                return _fetchOrderedFood(index - 1);
-              }
-            },
-          )),
+    return Container(
+      height: 600.00,
+      child: LiquidPullToRefresh(onRefresh: () async {
+        setState(() {
+          _ordered = [];
+        });
+      }, child: ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          if (index == 0) {
+            return Center(
+                child: Container(
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: '搜索',
+                ),
+                textAlign: TextAlign.center,
+                onChanged: (String keyword) {
+                  setState(() {
+                    _searchKeyword = keyword;
+                    _ordered = [];
+                  });
+                },
+              ),
+              width: 200.00,
+            ));
+          } else {
+            return _fetchOrderedFood(index - 1);
+          }
+        },
+      )),
     );
   }
 }

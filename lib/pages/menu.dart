@@ -3,6 +3,7 @@ import 'package:dining/pages/base.dart';
 import 'package:dio/dio.dart';
 import 'package:dining/components/view/dialog.dart';
 import 'package:dining/components/basic/auth.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class MenuPage extends BasePage {
   MenuPage({Key key, String title}) : super(key: key, title: title);
@@ -201,33 +202,37 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Container(
-            width: 200.00,
-            height: 500.00,
-            child: ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                if (index == 0) {
-                  return TextField(
-                    decoration: InputDecoration(
-                      labelText: '菜名',
+      body: Container(
+          height: 600.00,
+          child: LiquidPullToRefresh(onRefresh: () async {
+            setState(() {
+              _menu = [];
+            });
+          }, child: ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              if (index == 0) {
+                return Center(
+                  child: Container(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        labelText: '菜名',
+                      ),
+                      textAlign: TextAlign.center,
+                      onChanged: (String foodName) {
+                        setState(() {
+                          _searchFoodName = foodName;
+                          _menu = [];
+                        });
+                      },
                     ),
-                    textAlign: TextAlign.center,
-                    onChanged: (String foodName) {
-                      setState(() {
-                        _searchFoodName = foodName;
-                        _menu = [];
-                      });
-                    },
-                  );
-                } else {
-                  return _fetchMenu(context, index - 1);
-                }
-              },
-            )),
-      ),
+                    width: 200.00,
+                  ),
+                );
+              } else {
+                return _fetchMenu(context, index - 1);
+              }
+            },
+          ))),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _submitFood(context);
