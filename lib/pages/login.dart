@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dining/pages/base.dart';
 import 'package:dio/dio.dart';
 import 'package:dining/components/basic/auth.dart';
+import 'package:dining/components/basic/config.dart';
 
 class LoginPage extends BasePage {
   LoginPage({Key key, String title}) : super(key: key, title: title);
@@ -15,7 +16,8 @@ class _LoginPageState extends State<LoginPage> {
 
   _login(BuildContext context, String code) async {
     try {
-      Response response = await Dio().post('http://127.0.0.1:9501/dining/login',
+      Response response = await Dio().post(
+          Config.fetch('api_gateway') + '/dining/login',
           data: {'code': code},
           options: Options(responseType: ResponseType.json));
 

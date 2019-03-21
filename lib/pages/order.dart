@@ -3,6 +3,7 @@ import 'package:dining/pages/base.dart';
 import 'package:dio/dio.dart';
 import 'package:dining/components/basic/auth.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:dining/components/basic/config.dart';
 
 class OrderPage extends BasePage {
   OrderPage({Key key, String title}) : super(key: key, title: title);
@@ -23,7 +24,7 @@ class _OrderPageState extends State<OrderPage> {
         headers['Authorization'] = await Auth.getToken();
       }
       Response response = await Dio().get(
-        'http://127.0.0.1:9501/dining/ordered',
+        Config.fetch('api_gateway') + '/dining/ordered',
         queryParameters: {
           'page': page.toString(),
           'keyword': _searchKeyword,

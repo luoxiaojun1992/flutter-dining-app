@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:dining/components/view/dialog.dart';
 import 'package:dining/components/basic/auth.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:dining/components/basic/config.dart';
 
 class MenuPage extends BasePage {
   MenuPage({Key key, String title}) : super(key: key, title: title);
@@ -47,7 +48,7 @@ class _MenuPageState extends State<MenuPage> {
         headers['Authorization'] = await Auth.getToken();
       }
       Response response = await Dio().post(
-        'http://127.0.0.1:9501/dining/order',
+        Config.fetch('api_gateway') + '/dining/order',
         data: {'ids': foodsIds.toList()},
         options: Options(
           responseType: ResponseType.json,
@@ -165,12 +166,13 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   _fetchMenuData(int page) async {
-    Response response = await Dio().get('http://127.0.0.1:9501/dining/menu',
-        queryParameters: {
-          'page': page.toString(),
-          'keyword': _searchFoodName,
-        },
-        options: Options(responseType: ResponseType.json));
+    Response response =
+        await Dio().get(Config.fetch('api_gateway') + '/dining/menu',
+            queryParameters: {
+              'page': page.toString(),
+              'keyword': _searchFoodName,
+            },
+            options: Options(responseType: ResponseType.json));
 
     dynamic jsonData = response.data;
     if (jsonData['code'] == 0 && jsonData['data'].length > 0) {
