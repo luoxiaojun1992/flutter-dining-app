@@ -37,11 +37,13 @@ class _OrderPageState extends State<OrderPage> {
 
       dynamic jsonData = response.data;
       if (jsonData['code'] == 0 && jsonData['data'].length > 0) {
-        setState(() {
-          jsonData['data'].forEach((dynamic v) {
-            _ordered.add(v);
+        if (mounted) {
+          setState(() {
+            jsonData['data'].forEach((dynamic v) {
+              _ordered.add(v);
+            });
           });
-        });
+        }
       }
     } catch (e) {
       if (e.response != null && e.response.statusCode == 401) {
